@@ -1,0 +1,8 @@
+header a {
+    color: #fff;
+}
+
+.activeNav {
+    border: 1px solid #fff;
+    padding: 4px;
+}

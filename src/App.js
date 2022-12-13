@@ -1,25 +1,15 @@
-import logo from './logo.svg';
+import { useDispatch } from 'react-redux';
 import './App.css';
+import { isLoggedInOut } from './store/slices/authSlice';
+import { addProduct } from './store/slices/productsSlice';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const dispatch = useDispatch();
+
+  dispatch(addProduct({ id: 1, title: 'bag', price: 400 }));
+  dispatch(isLoggedInOut(true));
+
+  return <>Hello world Home</>;
 }
 
 export default App;
