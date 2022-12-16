@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { auth } from './../firebase/firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isLoggedInOut } from '../store/slices/authSlice';
 
 const RootLayout = () => {

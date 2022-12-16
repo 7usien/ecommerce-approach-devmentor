@@ -1,13 +1,32 @@
 import { Container, Box, Typography, TextField, Button } from '@mui/material';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { useState } from 'react';
 import { auth } from '../firebase/firebase';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  const login = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+
+        navigate('/');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
 
   const signup = () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -25,8 +44,10 @@ const Login = () => {
       });
   };
 
+  const { isLogged } = useSelector((state) => state.authSlice);
   return (
     <Container component='main' maxWidth='xs'>
+      {isLogged && <Navigate to='/' />}
       <Box
         sx={{
           marginTop: '50%',
@@ -64,6 +85,10 @@ const Login = () => {
           />
 
           <Button
+            onClick={(e) => {
+              console.log('hell;o');
+              login(e);
+            }}
             type='submit'
             fullWidth
             variant='contained'

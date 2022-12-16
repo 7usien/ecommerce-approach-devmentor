@@ -5,9 +5,9 @@ import shoppingCartSlice from './slices/shoppingCartSlice';
 
 const store = configureStore({
   reducer: {
-    products: productsSlice,
-    auth: authSlice,
-    shoppingCart: shoppingCartSlice,
+    productsSlice,
+    authSlice,
+    shoppingCartSlice,
   },
 });
 
