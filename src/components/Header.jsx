@@ -8,8 +8,7 @@ import {
 } from '@mui/material';
 
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { styles } from './Header.module.css';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useSelector } from 'react-redux';
@@ -18,8 +17,12 @@ import { auth } from './../firebase/firebase';
 const Header = () => {
   const { isLogged } = useSelector((state) => state.authSlice);
 
+  const navigate = useNavigate();
+
   const logout = () => {
-    signOut(auth);
+    signOut(auth).then(() => {
+      navigate('login');
+    });
   };
 
   return (
@@ -61,21 +64,25 @@ const Header = () => {
           </Link>
 
           {!isLogged ? (
-            <Link to='login'>
-              <Button color='primary' sx={{ backgroundColor: '#fff' }}>
-                Login
-              </Button>
-            </Link>
+            <Button
+              variant='outlined'
+              onClick={() => {
+                navigate('/login');
+              }}
+              color='primary'
+              sx={{ backgroundColor: '#fff' }}
+            >
+              Login
+            </Button>
           ) : (
-            <Link to='login'>
-              <Button
-                onClick={logout}
-                color='secondary'
-                sx={{ backgroundColor: '#fff' }}
-              >
-                logout
-              </Button>
-            </Link>
+            <Button
+              variant='outlined'
+              onClick={logout}
+              color='secondary'
+              sx={{ backgroundColor: '#fff' }}
+            >
+              logout
+            </Button>
           )}
         </Box>
       </Container>

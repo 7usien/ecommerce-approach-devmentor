@@ -3,14 +3,16 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { auth } from '../firebase/firebase';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Errormsg from '../components/Errormsg';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
   const login = (e) => {
@@ -23,8 +25,9 @@ const Login = () => {
         navigate('/');
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        setErrorMsg(error.message);
       });
   };
 
@@ -45,69 +48,85 @@ const Login = () => {
   };
 
   const { isLogged } = useSelector((state) => state.authSlice);
+
+  const changeMail = (e) => {
+    setEmail(e.target.value);
+    setErrorMsg(null);
+  };
+
+  const changePassword = (e) => {
+    setPassword(e.target.value);
+    setErrorMsg(null);
+  };
+
   return (
     <Container component='main' maxWidth='xs'>
-      {isLogged && <Navigate to='/' />}
-      <Box
-        sx={{
-          marginTop: '50%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'cernter',
-        }}
-      >
-        <Typography component='h1' variant='h5'>
-          Sign in
-        </Typography>
-        <Box component='form' noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
-            autoFocus
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            autoComplete='current-password'
-            onChange={(e) => setPassword(e.target.value)}
-          />
+      {isLogged ? (
+        <Navigate to='/' />
+      ) : (
+        <Box
+          sx={{
+            marginTop: '50%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'cernter',
+          }}
+        >
+          {errorMsg && <Errormsg errormsg={errorMsg} />}
 
-          <Button
-            onClick={(e) => {
-              console.log('hell;o');
-              login(e);
-            }}
-            type='submit'
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
+          <Typography component='h1' variant='h5'>
+            Sign in
+          </Typography>
+          <Box component='form' noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              id='email'
+              label='Email Address'
+              name='email'
+              autoComplete='email'
+              autoFocus
+              onChange={changeMail}
+            />
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              name='password'
+              label='Password'
+              type='password'
+              id='password'
+              autoComplete='current-password'
+              onChange={changePassword}
+            />
 
-          <Button
-            onClick={signup}
-            type='button'
-            fullWidth
-            variant='outlined'
-            sx={{ mt: 1 }}
-          >
-            Don't have an account? Sign Up
-          </Button>
+            <Button
+              onClick={(e) => {
+                console.log('hell;o');
+                login(e);
+              }}
+              type='submit'
+              fullWidth
+              variant='contained'
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+
+            <Button
+              onClick={signup}
+              type='button'
+              fullWidth
+              variant='outlined'
+              sx={{ mt: 1 }}
+            >
+              Don't have an account? Sign Up
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      )}
     </Container>
   );
 };
