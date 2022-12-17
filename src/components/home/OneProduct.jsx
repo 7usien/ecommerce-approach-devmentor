@@ -17,7 +17,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { useNavigate } from 'react-router-dom';
 
 const OneProduct = ({ product }) => {
-  const { id, title, price, description, category, image, rating } = product;
+  const { id, title, price, image, rating } = product;
 
   const navigate = useNavigate();
 
@@ -25,7 +25,9 @@ const OneProduct = ({ product }) => {
     navigate('/cart');
   }
 
-  const goToProductInfoPage = () => {};
+  const goToProductInfoPage = () => {
+    navigate('/product/' + id);
+  };
   const addToShoppingCart = () => {};
   const isInCart = () => {};
 
@@ -36,7 +38,11 @@ const OneProduct = ({ product }) => {
         borderRadius: '25px 0',
       }}
     >
-      <CardActionArea onClick={goToProductInfoPage}>
+      <CardActionArea
+        onClick={() => {
+          goToProductInfoPage(id);
+        }}
+      >
         <CardHeader
           title={
             <Typography noWrap align='center' width='150px'>
@@ -50,6 +56,7 @@ const OneProduct = ({ product }) => {
           sx={{
             objectFit: 'contain',
             height: { xs: 100, sm: 150 },
+            maxWidth: { xd: 100, sm: 150 },
           }}
         />
         <CardContent>

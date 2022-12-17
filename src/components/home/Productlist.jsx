@@ -8,10 +8,10 @@ const Productlist = () => {
 
   return (
     <>
-      {!!products.length > 0 && (
+      {products.length > 0 && (
         <Grid container spacing={3}>
           {products.map((product, idx) => (
-            <Grid item key={idx}>
+            <Grid item key={idx} xs={6} md={4} lg={3}>
               <OneProduct product={product} />
             </Grid>
           ))}

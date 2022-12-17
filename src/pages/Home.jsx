@@ -6,7 +6,7 @@ import Productlist from '../components/home/Productlist';
 
 const Home = () => {
   return (
-    <Container>
+    <Container sx={{ paddingY: '3rem' }}>
       <Productlist />
     </Container>
   );
