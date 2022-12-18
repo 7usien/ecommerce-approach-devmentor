@@ -15,6 +15,8 @@ import {
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { useNavigate } from 'react-router-dom';
+import { wait } from './../../utils/wait';
+import ProtectedRoute from '../../secure/ProtectedRoute';
 
 const OneProduct = ({ product }) => {
   const { id, title, price, image, rating } = product;
@@ -25,7 +27,8 @@ const OneProduct = ({ product }) => {
     navigate('/cart');
   }
 
-  const goToProductInfoPage = () => {
+  const goToProductInfoPage = async () => {
+    await wait(500);
     navigate('/product/' + id);
   };
   const addToShoppingCart = () => {};
@@ -38,11 +41,7 @@ const OneProduct = ({ product }) => {
         borderRadius: '25px 0',
       }}
     >
-      <CardActionArea
-        onClick={() => {
-          goToProductInfoPage(id);
-        }}
-      >
+      <CardActionArea onClick={goToProductInfoPage}>
         <CardHeader
           title={
             <Typography noWrap align='center' width='150px'>

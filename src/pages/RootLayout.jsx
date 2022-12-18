@@ -32,6 +32,7 @@ const RootLayout = () => {
       const res = fetch('https://fakestoreapi.com/products');
       res
         .then((raw) => raw.json())
+        //write data to db> products
         .then((data) => set(ref(db, 'products'), data));
     } catch (error) {
       console.log(error);
@@ -39,6 +40,7 @@ const RootLayout = () => {
   }, []);
 
   useEffect(() => {
+    // read data > db
     const starCountRef = ref(db, 'products');
 
     onValue(starCountRef, (snapshot) => {

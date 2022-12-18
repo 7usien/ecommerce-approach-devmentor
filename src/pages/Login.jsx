@@ -3,7 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { auth } from '../firebase/firebase';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -73,58 +73,60 @@ const Login = () => {
             justifyContent: 'cernter',
           }}
         >
-          {errorMsg && <Errormsg errormsg={errorMsg} />}
+          <form onSubmit={login} noValidate>
+            {errorMsg && <Errormsg errormsg={errorMsg} />}
 
-          <Typography component='h1' variant='h5'>
-            Sign in
-          </Typography>
-          <Box component='form' noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              id='email'
-              label='Email Address'
-              name='email'
-              autoComplete='email'
-              autoFocus
-              onChange={changeMail}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              name='password'
-              label='Password'
-              type='password'
-              id='password'
-              autoComplete='current-password'
-              onChange={changePassword}
-            />
+            <Typography component='h1' variant='h5'>
+              Sign in
+            </Typography>
 
-            <Button
-              onClick={(e) => {
-                console.log('hell;o');
-                login(e);
-              }}
-              type='submit'
-              fullWidth
-              variant='contained'
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
+            <Box component='form' noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
+                autoFocus
+                onChange={changeMail}
+              />
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
+                onChange={changePassword}
+              />
 
-            <Button
-              onClick={signup}
-              type='button'
-              fullWidth
-              variant='outlined'
-              sx={{ mt: 1 }}
-            >
-              Don't have an account? Sign Up
-            </Button>
-          </Box>
+              <Button
+                onClick={(e) => {
+                  login(e);
+                }}
+                type='submit'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+
+              <Button
+                onClick={signup}
+                type='button'
+                fullWidth
+                variant='outlined'
+                sx={{ mt: 1 }}
+              >
+                Don't have an account? Sign Up
+              </Button>
+            </Box>
+          </form>
         </Box>
       )}
     </Container>
