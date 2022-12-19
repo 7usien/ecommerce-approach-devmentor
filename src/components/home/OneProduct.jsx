@@ -13,25 +13,38 @@ import {
 } from '@mui/material';
 
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { useNavigate } from 'react-router-dom';
 import { wait } from './../../utils/wait';
 import ProtectedRoute from '../../secure/ProtectedRoute';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getAuth } from 'firebase/auth';
+import { addToCartAsync } from './../../store/slices/shoppingCartSlice';
 
 const OneProduct = ({ product }) => {
   const { id, title, price, image, rating } = product;
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLogged } = useSelector((state) => state.authSlice);
 
   function goToShoppingCartPage() {
     navigate('/cart');
   }
 
+  const addToShoppingCart = () => {
+    if (!isLogged) {
+      goToShoppingCartPage();
+      return;
+    }
+    const uid = getAuth().currentUser.uid;
+    dispatch(addToCartAsync(product, uid));
+    // add to shooping cart
+  };
   const goToProductInfoPage = async () => {
     await wait(500);
     navigate('/product/' + id);
   };
-  const addToShoppingCart = () => {};
   const isInCart = () => {};
 
   return (
@@ -66,15 +79,9 @@ const OneProduct = ({ product }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        {isInCart ? (
-          <IconButton onClick={goToShoppingCartPage}>
-            <ShoppingCartCheckoutIcon fontSize='large' color='success' />
-          </IconButton>
-        ) : (
-          <IconButton onClick={addToShoppingCart}>
-            <AddShoppingCartIcon fontSize='large' color='secondary' />
-          </IconButton>
-        )}
+        <IconButton onClick={addToShoppingCart}>
+          <AddShoppingCartIcon fontSize='large' color='secondary' />
+        </IconButton>
       </CardActions>
     </Card>
   );
