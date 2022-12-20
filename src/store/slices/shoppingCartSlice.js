@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { set, ref } from 'firebase/database';
 import { db } from '../../firebase/firebase';
-import { useDispatch } from 'react-redux';
 
 const initialState = [
   //
@@ -13,19 +12,19 @@ const shoppingCartSlice = createSlice({
   name: 'shoppingCartSlice',
   initialState: initialState,
   reducers: {
-    addToCart: (state, action) => {
-      state = state.push(action.payload);
-    },
+    addToCart: (state, action) => action.payload,
   },
 });
 
+let Totalstate = [];
 export const addToCartAsync = (product, uid) => (dispatch, getState) => {
-  const state = structuredClone(getState().shoppingCartSlice);
-  console.log(state);
+  Totalstate.push({ ...product });
 
-  set(ref(db, `users/${uid}`), state).then(() => {
+  set(ref(db, `users/${uid}`), Totalstate).then(() => {
     dispatch(addToCart(product));
   });
+
+  console.log(Totalstate);
 };
 
 export default shoppingCartSlice.reducer;
